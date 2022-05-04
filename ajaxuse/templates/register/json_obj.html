@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>json_obj_page</title>
+</head>
+<script src="/static/js/ajax.js"></script>
+<script src='/static/js/jquery.min.js'></script>
+<body>
+<button onclick="showJson()">showJson</button>
+<script>
+     function showJson(){
+     //json对象
+             var obj = {
+                "uname":"wanglaoshi",
+                "age":18,
+                "gender":"male"
+             }
+    //json对象数组
+             var json_arr = [
+                    {
+                "uname":"wanglaoshi",
+                "age":18,
+                "gender":"male"
+             },
+             {
+                "uname":"wangfuren",
+                "age":16,
+                "gender":"woman"
+             }
+             ]
+             //1.打印单个json对象
+             /*
+             console.log("name:"+obj.uname);
+             console.log("age:"+obj.age);
+             console.log("gender:"+obj.gender);
+             */
+
+
+             /*
+             //2.json循环多个对象
+             for (var i = 0;i<json_arr.length;i++){
+                   console.log("name:"+json_arr[i].uname);
+                   console.log("age:"+json_arr[i].age);
+                   console.log("gender:"+json_arr[i].gender);
+             }*/
+
+              /*
+             //3.jquery-v1循环多个对象,匿名函数中的i是循环的下标，obj是循环到的数组元素（这里是json对象）
+             $(json_arr).each(function(i,obj){
+                           console.log('index:'+i);
+                           console.log('uname:'+obj.uname);
+                           console.log('age:'+obj.age);
+                           console.log('gender:'+obj.gender);
+
+
+             })*/
+
+             /*
+             //4.jquery-v2循环多个对象
+             $.each(json_arr,function(i,obj){
+                           console.log('index:'+i);
+                           console.log('uname:'+obj.uname);
+                           console.log('age:'+obj.age);
+                           console.log('gender:'+obj.gender);
+
+             })*/
+
+
+             //前端在处理[{ "uname":"lili","uage":30,},{ "uname":"rourou","uage":31,}这样的json字符串的时候，作如下处理
+             var json_str = '[{ "uname":"lili","uage":30},{ "uname":"rourou","uage":31}]';
+             console.log(json_str)
+             //因为后端传过来的数据，经过xhr.responseText获取到的数据肯定是字符串类型的,使用JSON.parse()反序列化成json对象，然后可以做一系列的json操作去操作数据
+             var json_obj = JSON.parse(json_str)//反序列化操作，需要反序列化的json字符串需要严格遵守json的格式规范
+             console.log(json_obj)
+
+
+     }
+</script>
+
+</body>
+</html>

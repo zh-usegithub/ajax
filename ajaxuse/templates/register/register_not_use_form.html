@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+</head>
+<body>
+<script src='/static/js/ajax.js'></script>
+<!--下面要使用 $('#btn').click()这个的click事件就需要引入jquery文件-->
+<script src='/static/js/jquery.min.js'></script>
+<!--下面的代码是xhr的post请求方式-->
+<script>
+    $(function(){
+         $('#btn').click(
+                   function(){
+                      //创建xhr
+                      var xhr = createxhr()
+                      //创建请求，注意url需要以反斜杠结尾,因为在url的路由中是以反斜杠结尾的
+                      xhr.open('POST','/start/make_post/information',true);
+                      //设置回调
+                      xhr.onreadystatechange = function(){
+                           if(xhr.readyState == 4 && xhr.status ==200){
+                                     alert(xhr.responseText);
+                           }
+
+                      }
+                      //设置请求头并发送请求
+                      xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');//这里的Content-Type一定要写正确
+                      var username = $('#user_name').val();//jquery直接使用id取值
+                      var password = $("[name='pwd']").val();//jquery的属性选择器获取值
+                      //拼接post表单提交的参数
+                      var params = 'username='+username+'&pwd='+password;
+                      //发送post请求
+                      xhr.send(params);
+                   }
+         )
+    })
+</script>
+     <p>
+         用户名<input type="text" id="user_name" name="user_name">
+         <span id="show"></span>
+     </p>
+     <p>
+         密码<input type="password" id="pwd" name="pwd">
+
+     </p>
+     <p>
+         <input id="btn" type="submit" value="提交">
+     </p>
+</body>
+</html>

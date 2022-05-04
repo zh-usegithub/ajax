@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+<body>
+<script src="/static/js/ajax.js"></script>
+<script src='/static/js/jquery.min.js'></script>
+<script>
+function checkusername(){
+         var ret = false;
+                      var xhr = createxhr();
+                      var url =  '/start/make_get/checkusername?username='+$("#user_name").val()+'&password='+$("#pwd").val();
+                      xhr.open('get',url,false);//如果这里使用的是True异步的形式，那么下面的回调函数在服务器没有返回值的时候是不会被执行的，这时候最下面的发送请求会异步的执行，在回调函数把ret的值置为true之前提前返回ret的值，如果是false，表示同步代码，那么回调函数执行完成之后才会执行后面的代码
+                      xhr.onreadystatechange = function(){
+                                if (xhr.readyState == 4 && xhr.status == 200){
+                                               if (xhr.responseText == '1'){
+
+                                                         $('#show').html('用户已存在')
+                                                           ret = true;
+                                                          }else{
+                                                               $('#show').html('ok')
+                                                          }
+}
+}
+xhr.send(null);
+return ret;//这一句的执行顺序完全依赖于xhr的请求是否是异步的，意思是前面的代码在没有执行完成的情况下（即服务端还没有返回结果的情况下）是可以提前执行return ret这条语句
+
+}
+/*
+$(function(){
+       $('#btn').click(function(){
+                      var ret = false;
+                      var xhr = createxhr();
+                      var url =  '/start/make_get/information/?username='+$("#user_name").val()+'&password='+$("#pwd").val();
+                      xhr.open('get',url,true);
+                      xhr.onreadystatechange = function(){
+                                if (xhr.readyState == 4 && xhr.status == 200){
+                                               if (xhr.responseText == '1'){
+                                                         ret = true;
+                                                         $('#show').html('用户已存在')
+
+                                                          }else{
+                                                               $('#show').html('ok')
+                                                          }
+}
+}
+xhr.send(null);
+return ret;
+})
+})
+*/
+$(function(){
+      $("#user_name").blur(function(){
+                      checkusername();
+      })
+      $("#btn").click(function(){
+                   if (checkusername()){
+                           alert('用户名已存在，不能注册')
+                   }else{
+                       //发送post请求
+                       var xhr  = createxhr();
+                       xhr.open('post','/start/make_post/information',true)
+                       xhr.onreadystatechange = function(){
+                                           if (xhr.readyState ==4 && xhr.status == 200){
+                                                             alert(xhr.responseText);
+                                           }
+                       }
+                       xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+                       var username = $("#user_name").val();
+                       var password = $("[name = 'pwd']").val();
+                       var params = 'username='+username+'&password='+password;
+                       xhr.send(params);
+
+                   }
+      })
+})
+</script>
+     <p>
+         用户名<input type="text" id="user_name" name="user_name">
+         <span id="show"></span>
+     </p>
+     <p>
+         密码<input type="password" id="pwd" name="pwd">
+
+     </p>
+     <p>
+         <input id="btn" type="submit" value="提交">
+     </p>
+</body>
+</html>

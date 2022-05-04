@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>users_information</title>
+</head>
+<script src="/static/js/ajax.js"></script>
+<script src='/static/js/jquery.min.js'></script>
+<body>
+ <button id="btn">显示所有用户</button>
+ <table border="1">
+         <tr>
+         <td>
+             用户名
+         </td>
+         <td>
+             密码
+         </td>
+         </tr>
+
+     <tbody id="show"></tbody>
+ </table>
+<script>
+$(function(){
+       $('#btn').click(function(){
+                      var ret = false;
+                      var xhr = createxhr();
+                      var url =  '/start/user/get_all_user_information';
+                      xhr.open('get',url,true);
+                      xhr.onreadystatechange = function(){
+                                if (xhr.readyState == 4 && xhr.status == 200){
+                                                      var msg = xhr.responseText;
+                                                      var users = msg.split('|');
+                                                      var html = '';
+                                                      for (var i=0;i<users.length;i++){
+                                                             html+='<tr>';
+                                                             var info = users[i].split('_');
+                                                             html+='<td>'+info[0]+'</td>';
+                                                             html+='<td>'+info[1]+'</td>';
+                                                             html+='</tr>';
+
+                                                      }
+                                                      $('#show').html(html);
+}
+}
+xhr.send(null);
+return ret;
+})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* $(function(){
+            $('#btn').click(function(){
+                      var xhr = createxhr();
+                      xhr.open('get','/start/user/get_all_user_information',true);
+                      xhr.onreadystatechange = function(){
+                                           if(xhr.readyState == 4 && xhr.status ==200){
+                                                      var msg = xhr.responseText;
+                                                      var users = msg.aplit('|');
+                                                      var html = '';
+                                                      alert('123132131321231qwerwre');
+                                                      for (var i=0;i<users.length;i++){
+                                                             html+='<tr>';
+                                                             var info = users[i].split('_');
+                                                             html+='<td>'+info[0]+'</td>';
+                                                             html+='<td>'+info[1]+'</td>';
+                                                             html+='</tr>';
+
+                                                      }
+                                                      $('#show').html(html);
+                                                      alert(html);
+
+                                          }else{
+                                                alert('获取用户列表失败');
+                                          }
+                      }
+                      xhr.send(null);
+            })
+    })*/
+
+</script>
+</body>
+</html>
